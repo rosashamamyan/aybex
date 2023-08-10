@@ -3,8 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "users",
     {
       email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      hashRT: DataTypes.STRING,
+      password: DataTypes.STRING
     },
     {
       timestamps: false,
