@@ -19,10 +19,16 @@ class AuthControler {
 
   async signin(req, res, next) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.BadRequest("validation error", errors.array()));
+      }
       const { email, password } = req.body;
       const userData = await AuthService.signin(email, password);
-      res.cookie("refreshToken", userData.refreshToken);
-      console.log("req.cookies", req.cookies);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -30,21 +36,14 @@ class AuthControler {
   }
 
   async logout(req, res, next) {
-    // try {
-    //   console.log("00000000000000000000000000000000000000000000000000000000");
-    // const { refreshToken } = req.cookies;
-    //   console.log("refreshToken", refreshToken);
-    //   const token = await AuthService.logout(refreshToken);
-    //   res.clearCookie("refreshToken");
-    //   return res.json(token);
-    // } catch (e) {
-    console.log(
-      "11111111111111111111111111111111111111111111111111111111",
-      req.cookies[0]
-    );
-
-    //   next(e);
-    // }
+    try {
+      const { refreshToken } = req.cookies;
+      const token = await AuthService.logout(refreshToken);
+      res.clearCookie("refreshToken");
+      return res.json(token);
+    } catch (e) {
+      next(e);
+    }
   }
 
   async refresh(req, res, next) {
@@ -61,10 +60,13 @@ class AuthControler {
     }
   }
 
-  async getUsers(req, res, next) {
+  async getUser(req, res, next) {
     try {
-      const users = await AuthService.getAllUsers();
-      return res.json(users);
+      const user = await AuthService.getUser(req.user.id);
+      return res.json({
+        userId: user.id,
+        email: user.email,
+      });
     } catch (e) {
       next(e);
     }

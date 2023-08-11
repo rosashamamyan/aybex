@@ -18,6 +18,6 @@ authRouter.post(
 );
 authRouter.post("/logout", AuthControler.logout);
 authRouter.get("/refresh", AuthControler.refresh);
-authRouter.get("/users", authMiddleware, AuthControler.getUsers);
+authRouter.post("/user", authMiddleware, AuthControler.getUser);
 
 module.exports = authRouter;
