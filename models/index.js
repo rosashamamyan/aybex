@@ -17,7 +17,9 @@ db.sequelize = sequelize;
 db.models = {};
 db.models.User = require("./User")(sequelize, Sequelize.DataTypes);
 db.models.UserToken = require("./UserToken")(sequelize, Sequelize.DataTypes)
+db.models.Role = require("./Role")(sequelize, Sequelize.DataTypes)
 
 db.models.UserToken.belongsTo(db.models.User)
+db.models.User.belongsTo(db.models.Role)
 
 module.exports = db;

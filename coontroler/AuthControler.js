@@ -60,17 +60,7 @@ class AuthControler {
     }
   }
 
-  async getUser(req, res, next) {
-    try {
-      const user = await AuthService.getUser(req.user.id);
-      return res.json({
-        userId: user.id,
-        email: user.email,
-      });
-    } catch (e) {
-      next(e);
-    }
-  }
+  
 }
 
 module.exports = new AuthControler();

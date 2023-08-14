@@ -3,10 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     "users",
     {
       email: DataTypes.STRING,
-      password: DataTypes.STRING
+      password: DataTypes.STRING,
+      firstName: DataTypes.STRING,
+      lastName: DataTypes.STRING,
+      phone: DataTypes.STRING,
     },
     {
-      timestamps: false,
+      timestamps: true,
       freezeTableName: true
     }
   );
