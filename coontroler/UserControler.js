@@ -3,15 +3,47 @@ const ApiError = require("../exeptions/apiError");
 const UserService = require("../service/User.service");
 
 class UserControler {
-  async create(req, res, next) {
+  async createUser(req, res, next) {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.BadRequest("validation error", errors.array()));
       }
-      const {firstName, lastName, email, phone, password, roleID} = req.body
-      const userData = await UserService.create(firstName, lastName, email, phone, password, roleID)
-      return res.json(userData);
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+        roleID,
+        dob,
+        address,
+        state,
+        country,
+        city,
+        postal_code,
+        account_number,
+        account_status
+      } = req.body;
+      const userData = await UserService.createUser(
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+        roleID,
+        dob
+      );
+      const addressData = await UserService.createAddress(
+        address,
+        state,
+        country,
+        city,
+        postal_code,
+        account_number,
+        account_status
+      )
+      return res.json(userData, addressData);
     } catch (e) {
       next(e);
     }

@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       phone: DataTypes.STRING,
+      dob: DataTypes.DATEONLY
     },
     {
       timestamps: true,

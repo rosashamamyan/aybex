@@ -5,11 +5,11 @@ const { body } = require("express-validator");
 const userRouter = new Router();
 
 userRouter.post(
-  "/create",
+  "/createUser",
   authMiddleware,
   body("email").isEmail(),
-  body("password").isLength({ min: 3, max: 32 }),
-  UserControler.create
+  // body("password").isLength({ min: 3, max: 32 }),
+  UserControler.createUser
 );
 
 userRouter.get("/getAllUsers", authMiddleware, UserControler.findAllUsers);
