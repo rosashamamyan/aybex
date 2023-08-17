@@ -40,8 +40,9 @@ class UserService {
     return user;
   }
 
-  async createAddress(address, state, country, city, postal_code) {
+  async createAddress(id, address, state, country, city, postal_code) {
     const addressData = await db.models.Address.create({
+      userId: id,
       address,
       state,
       country,

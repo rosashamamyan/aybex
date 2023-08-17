@@ -15,7 +15,6 @@ class UserControler {
         email,
         phone,
         password,
-        roleID,
         dob,
         address,
         state,
@@ -25,16 +24,17 @@ class UserControler {
         account_number,
         account_status
       } = req.body;
+      const {id} = req.user
       const userData = await UserService.createUser(
         firstName,
         lastName,
         email,
         phone,
         password,
-        roleID,
         dob
       );
       const addressData = await UserService.createAddress(
+        id,
         address,
         state,
         country,
@@ -43,7 +43,12 @@ class UserControler {
         account_number,
         account_status
       )
-      return res.json(userData, addressData);
+      const responseData = {
+        userData,
+        addressData
+      };
+      console.log("responseeeeeeeeeee data", responseData);
+      return res.json(responseData);
     } catch (e) {
       next(e);
     }
@@ -57,8 +62,6 @@ class UserControler {
       next(e);
     }
   }
-
-
 }
 
 module.exports = new UserControler();
