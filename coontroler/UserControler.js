@@ -24,7 +24,8 @@ class UserControler {
         account_number,
         account_status
       } = req.body;
-      const {id} = req.user
+      console.log(req.body);
+      const userId = req.user.id
       const userData = await UserService.createUser(
         firstName,
         lastName,
@@ -34,7 +35,7 @@ class UserControler {
         dob
       );
       const addressData = await UserService.createAddress(
-        id,
+        userId,
         address,
         state,
         country,

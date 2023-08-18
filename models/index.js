@@ -23,5 +23,6 @@ db.models.Address = require("./Address")(sequelize, Sequelize.DataTypes)
 db.models.UserToken.belongsTo(db.models.User)
 db.models.User.belongsTo(db.models.Role)
 db.models.Address.belongsTo(db.models.User)
+db.models.User.belongsTo(db.models.Address)
 
 module.exports = db;

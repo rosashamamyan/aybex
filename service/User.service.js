@@ -1,8 +1,21 @@
 const db = require("../models");
 const bcrypt = require("bcrypt");
 const ApiError = require("../exeptions/apiError");
+const Address = require("../models/Address");
 
 class UserService {
+  async createAddress(id, address, state, country, city, postal_code) {
+    const addressData = await db.models.Address.create({
+      userId: id,
+      address,
+      state,
+      country,
+      city,
+      postal_code
+    })
+    return addressData
+  }
+  
   async createUser(firstName, lastName, email, phone, password, dob) {
     const candidate = await db.models.User.findOne({
       where: {
@@ -40,20 +53,9 @@ class UserService {
     return user;
   }
 
-  async createAddress(id, address, state, country, city, postal_code) {
-    const addressData = await db.models.Address.create({
-      userId: id,
-      address,
-      state,
-      country,
-      city,
-      postal_code
-    })
-    return addressData
-  }
 
   async findAllUsers() {
-     const allUsers = await db.models.User.findAll()
+    const allUsers = await db.models.User.findAll({ include: { all: true }})
      return allUsers
   }
 }
