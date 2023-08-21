@@ -24,18 +24,14 @@ class UserControler {
         account_number,
         account_status
       } = req.body;
-      console.log(req.body);
-      const userId = req.user.id
+
       const userData = await UserService.createUser(
         firstName,
         lastName,
         email,
         phone,
         password,
-        dob
-      );
-      const addressData = await UserService.createAddress(
-        userId,
+        dob,
         address,
         state,
         country,
@@ -43,13 +39,8 @@ class UserControler {
         postal_code,
         account_number,
         account_status
-      )
-      const responseData = {
-        userData,
-        addressData
-      };
-      console.log("responseeeeeeeeeee data", responseData);
-      return res.json(responseData);
+      );
+      return res.json(userData);
     } catch (e) {
       next(e);
     }
