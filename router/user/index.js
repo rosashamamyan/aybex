@@ -14,4 +14,8 @@ userRouter.post(
 
 userRouter.get("/getAllUsers", authMiddleware, UserControler.findAllUsers);
 
+userRouter.get("/getUser/:userId", authMiddleware, UserControler.getUser)
+
+userRouter.post("/updateUser", authMiddleware, UserControler.updateUser)
+
 module.exports = userRouter;

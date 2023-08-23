@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       firstName: DataTypes.STRING,
       lastName: DataTypes.STRING,
       phone: DataTypes.STRING,
-      dob: DataTypes.DATEONLY
+      dob: DataTypes.DATEONLY,
     },
     {
       timestamps: true,
-      freezeTableName: true
+      freezeTableName: true,
     }
   );
   return User;

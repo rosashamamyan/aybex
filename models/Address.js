@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       {
         timestamps: true,
-        freezeTableName: true
+        freezeTableName: true,
       }
     );
     return Address;

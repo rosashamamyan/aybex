@@ -54,6 +54,55 @@ class UserControler {
       next(e);
     }
   }
+
+  async getUser(req, res, next) {
+    try {
+      const userId = req.params.userId
+      const userData = await UserService.getUser(userId)
+      return res.json(userData)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  async updateUser(req, res, next) {
+    try {
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+        dob,
+        address,
+        state,
+        country,
+        city,
+        postal_code,
+        account_number,
+        account_status
+      } = req.body;
+
+      const updatedUserData = await UserService.updateUser(
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+        dob,
+        address,
+        state,
+        country,
+        city,
+        postal_code,
+        account_number,
+        account_status
+      );
+      return res.json(updatedUserData)
+    } catch (e) {
+      next(e)
+    }
+  }
 }
 
 module.exports = new UserControler();
