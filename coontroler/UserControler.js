@@ -68,6 +68,7 @@ class UserControler {
   async updateUser(req, res, next) {
     try {
       const {
+        id,
         firstName,
         lastName,
         email,
@@ -84,6 +85,7 @@ class UserControler {
       } = req.body;
 
       const updatedUserData = await UserService.updateUser(
+        id,
         firstName,
         lastName,
         email,

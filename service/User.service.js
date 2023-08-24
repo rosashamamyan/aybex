@@ -74,6 +74,7 @@ class UserService {
   }
 
   async updateUser(
+    id,
     firstName,
     lastName,
     email,
@@ -106,7 +107,7 @@ class UserService {
       dob,
     }, {
       where: {
-        email
+        id
       }
     });
 
@@ -120,7 +121,7 @@ class UserService {
       },
       {
         where: {
-          email,
+          userId: id
         },
       }
     );

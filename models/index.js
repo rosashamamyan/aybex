@@ -20,6 +20,8 @@ db.models.UserToken = require("./UserToken")(sequelize, Sequelize.DataTypes)
 db.models.Role = require("./Role")(sequelize, Sequelize.DataTypes)
 db.models.Address = require("./Address")(sequelize, Sequelize.DataTypes)
 db.models.UserActive = require("./UserActive")(sequelize, Sequelize.DataTypes)
+db.models.Strategy = require("./Strategy")(sequelize, Sequelize.DataTypes)
+db.models.StrategyType = require("./StrategyType")(sequelize, Sequelize.DataTypes)
 
 db.models.UserToken.belongsTo(db.models.User)
 db.models.User.belongsTo(db.models.Role)
@@ -27,5 +29,6 @@ db.models.User.hasOne(db.models.Address);
 db.models.Address.belongsTo(db.models.User)
 db.models.UserActive.belongsTo(db.models.User)
 db.models.User.hasOne(db.models.UserActive)
+db.models.Strategy.belongsTo(db.models.StrategyType)
 
 module.exports = db;
