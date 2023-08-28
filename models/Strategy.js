@@ -5,9 +5,15 @@ module.exports = (sequelize, DataTypes) => {
         icon: DataTypes.STRING,
         strategy_name: DataTypes.STRING,
         status: DataTypes.INTEGER,
-        color: DataTypes.STRING,
+        primary_color: DataTypes.STRING,
+        secondary_color: DataTypes.STRING,
         video: DataTypes.STRING,
-        order: DataTypes.INTEGER
+        sequence: DataTypes.INTEGER,
+        short_desc_web: DataTypes.STRING,
+        short_desc_mobile: DataTypes.STRING,
+        open_closed: DataTypes.INTEGER,
+        desc_web_mob: DataTypes.STRING,
+        long_desc: DataTypes.STRING
       },
       {
         timestamps: true,

@@ -7,4 +7,6 @@ strategyRouter.get("/getStrategies", authMiddleware, StrategyControler.getStrate
 
 strategyRouter.get("/getStrategyTypes", authMiddleware, StrategyControler.getStrategyTypes);
 
+strategyRouter.post("/createStrategy", authMiddleware, StrategyControler.createStrategy)
+
 module.exports = strategyRouter;

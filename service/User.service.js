@@ -59,7 +59,10 @@ class UserService {
   }
 
   async findAllUsers() {
-    const usersData = await db.models.User.findAll({ include: { all: true } });
+    const usersData = await db.models.User.findAll({
+      include: { all: true },
+      where: { roleId: 2 },
+    });
     return usersData;
   }
 
@@ -125,7 +128,6 @@ class UserService {
         },
       }
     );
-    console.log("updatedUser", updatedUser);
     return updatedUser
   }
 }
