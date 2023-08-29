@@ -10,6 +10,16 @@ class StrategyControler {
     }
   }
 
+  async getStrategy(req, res, next) {
+    try {
+      const strategyId = req.params.strategyId
+      const strategyData = await StrategyService.getStrategy(strategyId)
+      return res.json(strategyData)
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async getStrategyTypes(req, res, next) {
     try {
       const strategyTypesData = await StrategyService.getStrategyTypes()
@@ -20,7 +30,6 @@ class StrategyControler {
   }
 
   async createStrategy(req, res, next) {
-    console.log("strategy controler req body", req.body);
     try {
       const {
         strategy_name,
@@ -55,6 +64,50 @@ class StrategyControler {
       return res.json(createdStrategy);
     } catch (e) {
       next(e);
+    }
+  }
+
+  async editStrategy(req, res, next) {
+    try {
+      const {
+        id,
+        strategy_name,
+        icon,
+        status,
+        open_closed,
+        sequence,
+        video,
+        primary_color,
+        secondary_color,
+        strategy_type,
+        short_desc_web,
+        short_desc_mobile,
+        desc_web_mob,
+        long_desc,
+        exisedSequence
+      } = req.body;
+
+      const editedStrategy = await StrategyService.editStrategy(
+        id,
+        strategy_name,
+        icon,
+        status,
+        open_closed,
+        sequence,
+        video,
+        primary_color,
+        secondary_color,
+        strategy_type,
+        short_desc_web,
+        short_desc_mobile,
+        desc_web_mob,
+        long_desc,
+        exisedSequence
+      )
+
+      return res.json(editedStrategy);
+    } catch (e) {
+      next(e)
     }
   }
 }

@@ -1,6 +1,5 @@
 const db = require("../models");
 const bcrypt = require("bcrypt");
-const CryptoJS = require('crypto-js');
 const ApiError = require("../exeptions/apiError");
 
 class UserService {
