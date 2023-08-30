@@ -1,12 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
+  const { STRING, INTEGER } = DataTypes;
     const Address = sequelize.define(
       "addresses",
       {
-        address: DataTypes.STRING,
-        country: DataTypes.STRING,
-        state: DataTypes.STRING,
-        postal_code: DataTypes.INTEGER,
-        city: DataTypes.STRING
+        address: STRING,
+        country: STRING,
+        state: STRING,
+        postal_code: INTEGER,
+        city: STRING
       },
       {
         timestamps: true,

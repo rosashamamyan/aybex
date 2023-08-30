@@ -1,10 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
+    const { INTEGER } = DataTypes;
     const UserActive = sequelize.define(
         'userActive',
         {
-            userId: DataTypes.INTEGER,
-            activated: DataTypes.BOOLEAN,
-            deleted: DataTypes.BOOLEAN
+            userId: INTEGER,
+            activated: INTEGER,
+            deleted: INTEGER
         },
         {   
             timestamps: false,

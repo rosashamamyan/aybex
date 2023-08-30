@@ -1,19 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
+  const { STRING, INTEGER } = DataTypes;
     const Strategy = sequelize.define(
       "strategy",
       {
-        icon: DataTypes.STRING,
-        strategy_name: DataTypes.STRING,
-        status: DataTypes.INTEGER,
-        primary_color: DataTypes.STRING,
-        secondary_color: DataTypes.STRING,
-        video: DataTypes.STRING,
-        sequence: DataTypes.INTEGER,
-        short_desc_web: DataTypes.STRING,
-        short_desc_mobile: DataTypes.STRING,
-        open_closed: DataTypes.INTEGER,
-        desc_web_mob: DataTypes.STRING,
-        long_desc: DataTypes.STRING
+        icon: STRING,
+        strategy_name: STRING,
+        status: INTEGER,
+        primary_color: STRING,
+        secondary_color: STRING,
+        video: STRING,
+        sequence: INTEGER,
+        short_desc_web: STRING,
+        short_desc_mobile: STRING,
+        open_closed: INTEGER,
+        desc_web_mob: STRING,
+        long_desc: STRING
       },
       {
         timestamps: true,
