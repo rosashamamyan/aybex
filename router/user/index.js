@@ -18,4 +18,6 @@ userRouter.get("/getUser/:userId", authMiddleware, UserControler.getUser)
 
 userRouter.post("/updateUser", authMiddleware, UserControler.updateUser)
 
+userRouter.post("/reactivateAcc", authMiddleware, UserControler.reactivateAcc)
+
 module.exports = userRouter;

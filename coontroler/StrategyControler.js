@@ -30,38 +30,41 @@ class StrategyControler {
   }
 
   async createStrategy(req, res, next) {
+    console.log("req.bodyyyyyyyyyy", req.body);
+   
+   
     try {
-      const {
-        strategy_name,
-        icon,
-        status,
-        open_closed,
-        sequence,
-        video,
-        primary_color,
-        secondary_color,
-        strategy_type,
-        short_desc_web,
-        short_desc_mobile,
-        desc_web_mob,
-        long_desc,
-      } = req.body;
-      const createdStrategy = await StrategyService.createStrategy(
-        strategy_name,
-        icon,
-        status,
-        open_closed,
-        sequence,
-        video,
-        primary_color,
-        secondary_color,
-        strategy_type,
-        short_desc_web,
-        short_desc_mobile,
-        desc_web_mob,
-        long_desc
-      );
-      return res.json(createdStrategy);
+    //   const {
+    //     strategy_name,
+    //     icon,
+    //     status,
+    //     open_closed,
+    //     sequence,
+    //     video,
+    //     primary_color,
+    //     secondary_color,
+    //     strategy_type,
+    //     short_desc_web,
+    //     short_desc_mobile,
+    //     desc_web_mob,
+    //     long_desc,
+    //   } = req.body;
+    //   const createdStrategy = await StrategyService.createStrategy(
+    //     strategy_name,
+    //     icon,
+    //     status,
+    //     open_closed,
+    //     sequence,
+    //     video,
+    //     primary_color,
+    //     secondary_color,
+    //     strategy_type,
+    //     short_desc_web,
+    //     short_desc_mobile,
+    //     desc_web_mob,
+    //     long_desc
+    //   );
+    //   return res.json(createdStrategy);
     } catch (e) {
       next(e);
     }
@@ -109,6 +112,16 @@ class StrategyControler {
     } catch (e) {
       next(e)
     }
+  }
+
+  async deleteStrategy (req, res, next) {
+      try {
+        const {strategyId} = req.body
+        const newStrategiesData = await StrategyService.deleteStrategy(strategyId)
+        return res.json(newStrategiesData)
+      } catch(e) {
+        next(e)
+      }
   }
 }
 

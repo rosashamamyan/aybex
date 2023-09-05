@@ -105,6 +105,17 @@ class UserControler {
       next(e)
     }
   }
+
+  async reactivateAcc(req, res, next) {
+    const {userId, status} = req.body
+    console.log("statusssssssss", status);
+    try {
+       const reactivatedAcc = await UserService.reactivateAcc(userId, status)
+       return res.json(reactivatedAcc)
+    } catch (e) {
+      next(e)
+    }
+  }
 }
 
 module.exports = new UserControler();

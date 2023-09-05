@@ -128,6 +128,28 @@ class StrategyService {
     );
     return editedStrategy;
   }
+
+  async deleteStrategy(strategyId) {
+    await db.models.Strategy.destroy({
+      where: {
+        id: strategyId
+      }
+    })
+    const strategiesData = await db.models.Strategy.findAll();
+    const updatedStrategies = strategiesData.map((elm, index) => {
+      return {
+        id: elm.id, 
+        sequence: index + 1,
+      };
+    });
+
+    await db.models.Strategy.bulkCreate(updatedStrategies, {
+      updateOnDuplicate: ['sequence']
+    });
+
+    const newStrategiesData = await db.models.Strategy.findAll();
+    return newStrategiesData
+  }
 }
 
 module.exports = new StrategyService();

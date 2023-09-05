@@ -129,6 +129,17 @@ class UserService {
     );
     return updatedUser
   }
+
+  async reactivateAcc(userId, status) {
+    const reactivatedUser = await db.models.UserActive.update({
+      activated: !status
+    }, {
+      where: {
+        userId
+      }
+    })
+    return reactivatedUser
+  }
 }
 
 module.exports = new UserService();
