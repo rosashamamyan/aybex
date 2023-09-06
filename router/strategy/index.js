@@ -1,30 +1,58 @@
 const Router = require("express").Router;
 const StrategyControler = require("../../coontroler/StrategyControler");
 const authMiddleware = require("../../middlewares/authMiddleware");
+const path = require("path");
 const strategyRouter = new Router();
 const multer = require("multer");
 
+
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, "../../../client/src/assets/images"));
-    },
-    filename: function (req, file, cb) {
-      cb(null, `${Date.now()}_${file.originalname}`);
-    },
-  });
-  
-const upload = multer({storage})
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../../assets/images"));
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  },
+});
 
-strategyRouter.get("/getStrategies", authMiddleware, StrategyControler.getStrategies);
+const upload = multer({ storage });
 
-strategyRouter.get("/getStrategy/:strategyId", authMiddleware, StrategyControler.getStrategy);
+strategyRouter.get(
+  "/getStrategies",
+  authMiddleware,
+  StrategyControler.getStrategies
+);
 
-strategyRouter.get("/getStrategyTypes", authMiddleware, StrategyControler.getStrategyTypes);
+strategyRouter.get(
+  "/getStrategy/:strategyId",
+  authMiddleware,
+  StrategyControler.getStrategy
+);
 
-strategyRouter.post("/createStrategy", authMiddleware, upload.single("icon"), StrategyControler.createStrategy);
+strategyRouter.get(
+  "/getStrategyTypes",
+  authMiddleware,
+  StrategyControler.getStrategyTypes
+);
 
-strategyRouter.post("/editStrategy", authMiddleware, upload.single("icon"), StrategyControler.editStrategy);
+strategyRouter.post(
+  "/createStrategy",
+  authMiddleware,
+  upload.single("file"),
+  StrategyControler.createStrategy
+);
 
-strategyRouter.post("/deleteStrategy", authMiddleware, StrategyControler.deleteStrategy);
+strategyRouter.post(
+  "/editStrategy",
+  authMiddleware,
+  upload.single("file"),
+  StrategyControler.editStrategy
+);
+
+strategyRouter.post(
+  "/deleteStrategy",
+  authMiddleware,
+  StrategyControler.deleteStrategy
+);
 
 module.exports = strategyRouter;

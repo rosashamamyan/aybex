@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const {STRING, INTEGER, DECIMAL, DATEONLY} = DataTypes
+    const {INTEGER, DECIMAL, DATEONLY} = DataTypes
     const AccountData = sequelize.define(
       "account_data",
       {

@@ -21,7 +21,7 @@ app.use(
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use('/assets',express.static('assets/images'))
 app.use(
   session({
     secret: process.env.SECRET,
