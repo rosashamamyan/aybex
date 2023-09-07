@@ -14,7 +14,8 @@ class UserService {
     state,
     country,
     city,
-    postal_code
+    postal_code,
+    accounts
   ) {
     const candidate = await db.models.User.findOne({
       where: {
@@ -53,6 +54,15 @@ class UserService {
       postal_code,
       userId,
     });
+
+    for(let e of accounts) {
+      const {account_number, account_status} = e
+      await db.models.UserAccount.create({
+          user_id: userId,
+          account_number,
+          account_status
+        });
+    }
 
     return userData;
   }
@@ -100,18 +110,21 @@ class UserService {
     //   throw ApiError.BadRequest(`User with ${email} email already exists`);
     // }
 
-    const updatedUser = await db.models.User.update({
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      dob,
-    }, {
-      where: {
-        id
+    const updatedUser = await db.models.User.update(
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+        dob,
+      },
+      {
+        where: {
+          id,
+        },
       }
-    });
+    );
 
     const updatedAddress = await db.models.Address.update(
       {
@@ -123,22 +136,25 @@ class UserService {
       },
       {
         where: {
-          userId: id
+          userId: id,
         },
       }
     );
-    return updatedUser
+    return updatedUser;
   }
 
   async reactivateAcc(userId, status) {
-    const reactivatedUser = await db.models.UserActive.update({
-      activated: !status
-    }, {
-      where: {
-        userId
+    const reactivatedUser = await db.models.UserActive.update(
+      {
+        activated: !status,
+      },
+      {
+        where: {
+          userId,
+        },
       }
-    })
-    return reactivatedUser
+    );
+    return reactivatedUser;
   }
 }
 

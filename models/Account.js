@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Account = sequelize.define(
     "accounts",
     {
+      admin_account_id: INTEGER,
       name: STRING,
       created_by: INTEGER,
       updated_by: INTEGER,

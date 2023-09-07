@@ -21,8 +21,7 @@ class UserControler {
         country,
         city,
         postal_code,
-        account_number,
-        account_status
+        accounts
       } = req.body;
 
       const userData = await UserService.createUser(
@@ -37,8 +36,7 @@ class UserControler {
         country,
         city,
         postal_code,
-        account_number,
-        account_status
+        accounts
       );
       return res.json(userData);
     } catch (e) {
