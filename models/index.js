@@ -37,6 +37,7 @@ db.models.User.hasOne(db.models.Address);
 db.models.Address.belongsTo(db.models.User)
 db.models.UserActive.belongsTo(db.models.User)
 db.models.User.hasOne(db.models.UserActive)
+db.models.UserAccount.belongsTo(db.models.User)
 
 db.models.Strategy.belongsTo(db.models.StrategyType)
 db.models.AccountUploadBatch.belongsTo(db.models.Strategy)

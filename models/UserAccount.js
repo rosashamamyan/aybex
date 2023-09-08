@@ -1,10 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
-    const { INTEGER } = DataTypes;
+    const { INTEGER, STRING } = DataTypes;
     const UserAccount = sequelize.define(
       "user_account",
       {
-        user_id: INTEGER,
-        account_number: INTEGER,
+        account_number: STRING,
         account_status: INTEGER
       },
       {

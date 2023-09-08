@@ -55,10 +55,10 @@ class UserService {
       userId,
     });
 
-    for(let e of accounts) {
+    for await (let e of accounts) {
       const {account_number, account_status} = e
       await db.models.UserAccount.create({
-          user_id: userId,
+          userId,
           account_number,
           account_status
         });

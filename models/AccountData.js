@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const AccountData = sequelize.define(
       "account_data",
       {
+        admin_account_id: INTEGER,
         commited: DECIMAL(10, 2),
         contribution: DECIMAL(10, 2),
         distribution: DECIMAL(10, 2),
