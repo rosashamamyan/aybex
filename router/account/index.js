@@ -9,4 +9,10 @@ accountRouter.post(
   AccountControler.createAccount
 );
 
+accountRouter.get(
+  "/fetchAccountUploadBatch",
+  authMiddleware,
+  AccountControler.fetchAccountUploadBatch
+)
+
 module.exports = accountRouter;
