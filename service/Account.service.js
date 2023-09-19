@@ -7,10 +7,14 @@ class AccountService {
     fileName,
     fileData,
     loggedUserId
-  ) {
-    const accounts = await db.models.Account.findAll();
-    const newAccounts = [];
-    const existedAccounts = [];
+    ) {
+      const accounts = await db.models.Account.findAll();
+      const user_accounts = await db.models.UserAccount.findAll({
+        include: { all: true },
+      });
+      const newAccounts = [];
+      const existedAccounts = [];
+      const accountsForCreating = [];
 
     for await (let e of fileData) {
       if (
@@ -19,6 +23,14 @@ class AccountService {
         existedAccounts.push(e);
       } else {
         newAccounts.push(e);
+      }
+    }
+
+    for await (let e of newAccounts) {
+      if (
+        user_accounts.some((a) => e["Admin Account ID"] == a.account_number)
+      ) {
+        accountsForCreating.push(e);
       }
     }
 
@@ -39,86 +51,113 @@ class AccountService {
         {
           name: e["Account Name"],
           updated_by: loggedUserId,
-          accountUploadatchId: accountUploadBatch.id
+          accountUploadBatchId: accountUploadBatch.id
         },
         { where: { admin_account_id: e["Admin Account ID"] } }
       );
 
       //UPDATE ACCOUNT DATA
+      const account = db.models.Account.findOne({
+        where: { admin_account_id: e["Admin Account ID"] },
+      })
+      const oldAccountData = await db.models.AccountData.findOne({
+        where: { admin_account_id: e["Admin Account ID"] },
+      });
+      
       await db.models.AccountData.update(
         {
-          committed: e["ITD Net Return %"],
+          commited: e["ITD Net Return %"],
           contribution: e["Period Contributions ($)"],
           distribution: e["Period Distributions ($)"],
-          redemptions: e["Period Redemptions ($)"],
+          redemption: e["Period Redemptions ($)"],
           balance: e["Balance ($)"],
           si_net_profit_loss: e["ITD Net/Income Loss ($)"],
-          // new_investor_irr: e[""], //???????????????????????????????
           post_date: e["As of Date"],
           updated_by: loggedUserId,
-          accountUploadatchId: accountUploadBatch.id
+          accountUploadBatchId: accountUploadBatch.id
         },
         { where: { admin_account_id: e["Admin Account ID"] } }
       );
 
-      //UPDATE ACCOUNT TRANSACTIONS
-      
-    }
-
-    const user_accounts = await db.models.UserAccount.findAll({
-      include: { all: true },
-    });
-
-    for await (let e of newAccounts) {
-       if(user_accounts.some((a) => e["Admin Account ID"] == a.admin_account_id)){
-         const subFund = await db.models.SubFund.findOne({
-           where: {
-             name: e["Sub-Fund"],
-           },
-         });
-
-         //CREATE ACCOUNT
-         const account = await db.models.Account.create({
-           name: e["Account Name"],
-           admin_account_id: e["Admin Account ID"],
+      //CREATE ACCOUNT TRANSACTIONS
+      const validKeys = ["commited", "contribution", "distribution", "redemption"];
+      for await (const [key, value] of Object.entries(accountData.dataValues)) {
+       if (validKeys.includes(key)) {
+         await db.models.AccountTransactions.create({
+           // date: ,
+           type: key,
+           amount: value,
            created_by: loggedUserId,
            updated_by: loggedUserId,
-           subFundId: subFund.id,
-           accountUploadatchId: accountUploadBatch.id
+           userId: user.userId,
+           accountId: account.id,
+           strategyId: strategy_id
          })
-   
-         //CREATE ACCOUNT DATA
-         const accountData = await db.models.AccountData.create({
-           accountId: accId,
-           accountUploadatchId: accountUploadBatch.id,
-           committed: e["ITD Net Return %"],
-           contribution: e["Period Contributions ($)"],
-           distribution: e["Period Distributions ($)"],
-           redemptions: e["Period Redemptions ($)"],
-           balance: e["Balance ($)"],
-           si_net_profit_loss: e["ITD Net/Income Loss ($)"],
-          //  new_investor_irr: e[""], //???????????????????????????????
-           post_date: e["As of Date"],
-           updated_by: loggedUserId,
-         });
-   
-         //CREATE ACCOUNT TRANSACTIONS
-         for await (const [key, value] of Object.entries(accountData)) {
-          console.log(`${key}: ${value}`); 
-          
-         }
-   
-         //CREATE ACCOUNT USER
-         await db.models.AccountUser.create({
-          account_status: 1,
-          created_by: loggedUserId,
-          updated_by: loggedUserId,
-          accountId: account.id,
-          userId: a.userId
-         })
-       } else {
-         
        }
+      }
+    }
+
+
+
+    for await(let e of accountsForCreating) {
+      const subFund = await db.models.SubFund.findOne({
+        where: {
+          name: e["Sub-Fund"],
+        },
+      });
+      const user = user_accounts.find(elm => elm.account_number === e["Admin Account ID"])
+
+      //CREATE ACCOUNT
+      const account = await db.models.Account.create({
+        name: e["Account Name"],
+        admin_account_id: e["Admin Account ID"],
+        created_by: loggedUserId,
+        updated_by: loggedUserId,
+        subFundId: subFund.id,
+        accountUploadBatchId: accountUploadBatch.id
+      })
+
+      //CREATE ACCOUNT DATA
+      const accountData = await db.models.AccountData.create({
+        accountId: account.id,
+        admin_account_id: e["Admin Account ID"],
+        accountUploadBatchId: accountUploadBatch.id,
+        commited: e["ITD Net Return %"],
+        contribution: e["Period Contributions ($)"],
+        distribution: e["Period Distributions ($)"],
+        redemption: e["Period Redemptions ($)"],
+        balance: e["Balance ($)"],
+        si_net_profit_loss: e["ITD Net Income/Loss ($)"],
+        post_date: e["As of Date"],
+        created_by: loggedUserId,
+        updated_by: loggedUserId,
+      });
+
+      //CREATE ACCOUNT TRANSACTIONS
+      const validKeys = ["commited", "contribution", "distribution", "redemption"];
+      for await (const [key, value] of Object.entries(accountData.dataValues)) {
+       if (validKeys.includes(key)) {
+         await db.models.AccountTransactions.create({
+           // date: ,
+           type: key,
+           amount: value,
+           created_by: loggedUserId,
+           updated_by: loggedUserId,
+           userId: user.userId,
+           accountId: account.id,
+           strategyId: strategy_id
+         })
+       }
+      }
+
+      //CREATE ACCOUNT USER
+      await db.models.AccountUser.create({
+       account_status: 1,
+       created_by: loggedUserId,
+       updated_by: loggedUserId,
+       accountId: account.id,
+       userId: user.userId
+      })
     }
   }
 
