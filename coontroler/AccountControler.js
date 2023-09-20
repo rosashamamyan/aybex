@@ -27,6 +27,15 @@ class AccountControler {
       next(e);
      }
   }
+
+  async fetchLastAccountUploadBatch(req, res, next) {
+    try {
+      const lastAccountUploadBatchData = await AccountService.fetchLastAccountUploadBatch()
+      return res.json(lastAccountUploadBatchData)
+    } catch(e) {
+      next(e)
+    }
+  }
 }
 
 module.exports = new AccountControler();

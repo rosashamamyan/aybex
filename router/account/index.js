@@ -15,4 +15,10 @@ accountRouter.get(
   AccountControler.fetchAccountUploadBatch
 )
 
+accountRouter.get(
+  "/fetchLastAccountUploadBatch",
+  authMiddleware,
+  AccountControler.fetchLastAccountUploadBatch
+)
+
 module.exports = accountRouter;
