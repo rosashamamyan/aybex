@@ -21,4 +21,10 @@ accountRouter.get(
   AccountControler.fetchLastAccountUploadBatch
 )
 
+accountRouter.post(
+  "/deleteUploadBatch",
+  authMiddleware,
+  AccountControler.deleteUploadBatch
+)
+
 module.exports = accountRouter;

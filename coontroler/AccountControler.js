@@ -31,9 +31,18 @@ class AccountControler {
   async fetchLastAccountUploadBatch(req, res, next) {
     try {
       const lastAccountUploadBatchData = await AccountService.fetchLastAccountUploadBatch()
-      return res.json(lastAccountUploadBatchData)
+      res.send(lastAccountUploadBatchData)
     } catch(e) {
       next(e)
+    }
+  }
+
+  async deleteUploadBatch(req, res, next) {
+    const {uploadBatchId} = req.body
+    try {
+      res.send(await AccountService.deleteUploadBatch(uploadBatchId))
+    } catch(e) {
+       next(e)
     }
   }
 }

@@ -29,10 +29,7 @@ class StrategyControler {
     }
   }
 
-  async createStrategy(req, res, next) {
-    console.log("req.bodyyyyyyyyyy", req.body);
-    console.log("req.bodyyyyyyyyyy", req.file);
-   
+  async createStrategy(req, res, next) {  
     try {
       const {
         strategy_name,
