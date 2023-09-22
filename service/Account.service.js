@@ -55,7 +55,7 @@ class AccountService {
         );
 
         //UPDATE ACCOUNT DATA
-        const account = db.models.Account.findOne({
+        const account = await db.models.Account.findOne({
           where: { admin_account_id: e["Admin Account ID"] },
         });
         const oldAccountData = await db.models.AccountData.findOne({
@@ -71,7 +71,7 @@ class AccountService {
             parseFloat(oldAccountData.distribution) + parseFloat(e["Period Distributions ($)"]),
             redemption: parseFloat(oldAccountData.redemption) + parseFloat(e["Period Redemptions ($)"]),
             balance: parseFloat(oldAccountData.balance) + parseFloat(e["Balance ($)"]),
-            si_net_profit_loss: e["ITD Net/Income Loss ($)"],
+            si_net_profit_loss:  parseFloat(oldAccountData.si_net_profit_loss) + e["ITD Net/Income Loss ($)"],
             post_date: e["As of Date"],
             updated_by: loggedUserId,
             accountUploadBatchId: accountUploadBatch.id,
@@ -189,13 +189,12 @@ class AccountService {
     const lastUploadBatchData = await db.models.AccountUploadBatch.findAll({limit: 1, order: [ [ 'createdAt', 'DESC' ]], include: {all: true}})
     const strategy = await db.models.Strategy.findOne({where: {id: lastUploadBatchData[0].dataValues.strategyId}})
     const strategyType = await db.models.StrategyType.findOne({where: {id: strategy.dataValues.strategyTypeId}})
-    console.log(lastUploadBatchData[0].dataValues);
     return {...lastUploadBatchData[0].dataValues, strategy_type: strategyType.dataValues.name}
   }
 
   async deleteUploadBatch(uploadBatchId) {
     await db.models.AccountUploadBatch.destroy({where: {id: uploadBatchId}})
-    return await db.models.AccountUploadBatch.findAll()
+    return await db.models.AccountUploadBatch.findAll({include: {all: true}})
   }
 }
 

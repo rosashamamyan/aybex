@@ -40,7 +40,8 @@ class AccountControler {
   async deleteUploadBatch(req, res, next) {
     const {uploadBatchId} = req.body
     try {
-      res.send(await AccountService.deleteUploadBatch(uploadBatchId))
+      const accountUploadBatch = await AccountService.deleteUploadBatch(uploadBatchId)
+      res.send(accountUploadBatch)
     } catch(e) {
        next(e)
     }

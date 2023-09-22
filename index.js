@@ -34,6 +34,5 @@ app.use("/api", router);
 app.use(errorMiddleware);
 
 app.listen(process.env.PORT || 8080, async () => {
-  console.log(process.env.PORT);
   await db.sequelize.sync();
 });
